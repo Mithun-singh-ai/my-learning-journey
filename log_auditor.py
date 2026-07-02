@@ -18,8 +18,8 @@ for filename in os.listdir(SOURCE_FOLDER):
         file_path = os.path.join(SOURCE_FOLDER, filename)
         file_age = os.path.getmtime(file_path)
         
-        # Archive files older than 24 hours (1 day)
-        if (time.time() - file_age) > (1 * 86400):
+        # Archive files older than 24 hours
+        if (time.time() - file_age) > (86400):
             shutil.move(file_path, os.path.join(ARCHIVE_FOLDER, filename))
             print(f"Successfully archived: {filename}")
         else:
