@@ -2,25 +2,27 @@ import os
 import shutil
 import time
 
-# जिस फोल्डर में ये स्क्रिप्ट है, उसी को स्कैन करेगी
-folder_to_clean = "." 
-archive_folder = "archive_logs"
+# Configuration
+SOURCE_FOLDER = "." 
+ARCHIVE_FOLDER = "archive_logs"
 
-if not os.path.exists(archive_folder):
-    os.makedirs(archive_folder)
+# Ensure the archive directory exists
+if not os.path.exists(ARCHIVE_FOLDER):
+    os.makedirs(ARCHIVE_FOLDER)
 
-print("--- Cloud-Auditor Running ---")
+print("--- Starting Log Audit Process ---")
 
-for filename in os.listdir(folder_to_clean):
+# Scan the directory
+for filename in os.listdir(SOURCE_FOLDER):
     if filename.endswith(".log"):
-        file_path = os.path.join(folder_to_clean, filename)
+        file_path = os.path.join(SOURCE_FOLDER, filename)
         file_age = os.path.getmtime(file_path)
         
-        # अगर फाइल 1 दिन से पुरानी है
+        # Archive files older than 24 hours (1 day)
         if (time.time() - file_age) > (1 * 86400):
-            shutil.move(file_path, os.path.join(archive_folder, filename))
-            print(f"Archived: {filename}")
+            shutil.move(file_path, os.path.join(ARCHIVE_FOLDER, filename))
+            print(f"Successfully archived: {filename}")
         else:
-            print(f"Skipped: {filename} (Recent file)")
+            print(f"Skipped: {filename} (File is recent)")
 
-print("--- Audit Complete ---")
+print("--- Log Audit Completed Successfully ---")
